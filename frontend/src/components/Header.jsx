@@ -8,7 +8,9 @@ export default function Header() {
           size={50}
           className="text-violet-500 drop-shadow-[0_0_10px_rgba(139,92,246,0.8)]"
         />
-        <div className="text-4xl font-semibold">Whisper<span className="text-violet-500">Wall</span></div>
+        <div className="text-4xl font-semibold">
+          Whisper<span className="text-violet-500">Wall</span>
+        </div>
       </div>
       <div className="flex gap-5">
         <div>Home</div>
