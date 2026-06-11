@@ -1,6 +1,8 @@
 import { LockKeyhole } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function Header() {
+  const navigate = useNavigate();
   return (
     <div className="flex justify-around items-center inset-0 bg-[#00030D] text-white sticky z-50 p-4">
       <div className="flex items-center justify-center gap-1">
@@ -23,6 +25,7 @@ export default function Header() {
           className="bg-[#040A17] border border-[#15213A]
   rounded-xl px-8 py-3 font-semibold text-white
   hover:border-[#243557] transition-all"
+          onClick={() => navigate("/login")}
         >
           Log in
         </button>
@@ -32,6 +35,7 @@ export default function Header() {
   shadow-[0_0_20px_rgba(139,92,246,0.35)]
   rounded-xl px-8 py-3 font-semibold text-white
   hover:scale-105 transition-all"
+          onClick={() => navigate("/signup")}
         >
           Sign up
         </button>

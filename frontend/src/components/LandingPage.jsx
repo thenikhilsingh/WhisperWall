@@ -1,8 +1,13 @@
 import { LockKeyhole, UserRound, Users, ShieldCheck, User } from "lucide-react";
+import Header from "./Header";
+import Footer from "./Footer";
+import { useNavigate } from "react-router-dom";
 
 export default function LandingPage() {
+  const navigate = useNavigate();
   return (
     <div>
+      <Header />
       <div className="relative h-screen">
         {/* Background Image */}
         <div className="absolute inset-0 bg-[url('/MainBG.png')] bg-contain bg-[position:120%_40%] bg-no-repeat" />
@@ -30,10 +35,16 @@ export default function LandingPage() {
               Outside, it's just words.
             </p>
             <div className="mt-8 flex items-center gap-4">
-              <button className="px-8 py-4 rounded-xl bg-linear-to-r from-violet-600 to-purple-500 text-white font-semibold shadow-[0_0_25px_rgba(139,92,246,0.4)] hover:scale-105 transition">
+              <button
+                className="px-8 py-4 rounded-xl bg-linear-to-r from-violet-600 to-purple-500 text-white font-semibold shadow-[0_0_25px_rgba(139,92,246,0.4)] hover:scale-105 transition"
+                onClick={() => navigate("/join-club")}
+              >
                 Join the Club
               </button>
-              <button className="px-8 py-4 rounded-xl border border-slate-800 bg-[#050B1A] text-white font-semibold hover:border-slate-700 transition">
+              <button
+                className="px-8 py-4 rounded-xl border border-slate-800 bg-[#050B1A] text-white font-semibold hover:border-slate-700 transition"
+                onClick={() => navigate("/login")}
+              >
                 Log in
               </button>
             </div>
@@ -137,6 +148,7 @@ export default function LandingPage() {
           ))}
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

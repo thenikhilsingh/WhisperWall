@@ -9,11 +9,17 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import LandingPage from "./components/LandingPage.jsx";
+import Login from "./components/Login.jsx";
+import Signup from "./components/Signup.jsx";
+import JoinClub from "./components/JoinClub.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route path="" element={<LandingPage />}></Route>
+      <Route path="/login" element={<Login />}></Route>
+      <Route path="/signup" element={<Signup />}></Route>
+      <Route path="/join-club" element={<JoinClub />}></Route>
     </Route>,
   ),
 );

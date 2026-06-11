@@ -1,6 +1,8 @@
 import { LockKeyhole } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function Footer() {
+  const navigate = useNavigate();
   return (
     <div className="bg-[#020817] text-white">
       {/* CTA Section */}
@@ -14,7 +16,10 @@ export default function Footer() {
               post your thoughts and connect with others.
             </p>
           </div>
-          <button className="bg-violet-600 hover:bg-violet-500 px-8 py-4 rounded-xl font-semibold transition">
+          <button
+            className="bg-violet-600 hover:bg-violet-500 px-8 py-4 rounded-xl font-semibold transition"
+            onClick={() => navigate("/signup")}
+          >
             Sign up now
           </button>
         </div>
