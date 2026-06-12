@@ -1,5 +1,6 @@
 const User = require("../models/User.js");
 const bcrypt = require("bcryptjs");
+const { validationResult } = require("../validators/authValidator.js");
 
 const home = async (req, res) => {
   try {
@@ -11,6 +12,11 @@ const home = async (req, res) => {
 
 //Registeration Logic
 const register = async (req, res) => {
+  //validations
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
   try {
     // 1. Get Registration Data: 📥 Retrieve user data (username, email, password).
     const { fullName, email, password } = req.body;
@@ -44,6 +50,11 @@ const register = async (req, res) => {
 
 //Login Logic
 const login = async (req, res) => {
+  //validations
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
   try {
     //1. Get Login Data: 📥 Retrieve login data (email, password).
     const { email, password } = req.body;
@@ -55,9 +66,10 @@ const login = async (req, res) => {
     }
 
     // 3. If User exists then Compare Password
-    const isPasswordValid = await bcrypt.compare(password, userExist.password);
+    // const isPasswordValid = await bcrypt.compare(password, userExist.password);
+    const isPasswordValid = await userExist.comparePassword(password);
 
-    // 4. If password is correct then
+    // 4. If password is correct then generate token
     if (isPasswordValid) {
       res.status(200).json({
         msg: "Login Successfull!",
