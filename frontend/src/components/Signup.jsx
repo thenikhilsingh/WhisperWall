@@ -1,12 +1,48 @@
 import { LockKeyhole, Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function Signup() {
   const navigate = useNavigate();
-
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (formData.password !== formData.confirmPassword) {
+      console.error("Password do not match!");
+      return;
+    }
+    const payload = {
+      fullName: formData.fullName,
+      email: formData.email,
+      password: formData.password,
+    };
+    try {
+      const response = await axios.post(
+        `${API_BASE_URL}/api/auth/register`,
+        payload,
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.log(error.response.data);
+    }
+  };
 
   return (
     <div
@@ -37,7 +73,7 @@ export default function Signup() {
         </p>
 
         {/* Form */}
-        <form className="mt-4 space-y-4">
+        <form className="mt-4 space-y-4" onSubmit={handleSubmit}>
           <div className="flex gap-2">
             {/* Full Name */}
             <div>
@@ -48,6 +84,9 @@ export default function Signup() {
                 type="text"
                 placeholder="Enter your full name"
                 className="w-full rounded-xl border border-slate-700 bg-[#0A1328] py-3 px-4 text-white outline-none focus:border-violet-500"
+                name="fullName"
+                value={formData.fullName}
+                onChange={handleChange}
               />
             </div>
             {/* Email */}
@@ -59,6 +98,9 @@ export default function Signup() {
                 type="email"
                 placeholder="you@example.com"
                 className="w-full rounded-xl border border-slate-700 bg-[#0A1328] py-3 px-4 text-white outline-none focus:border-violet-500"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
               />
             </div>
           </div>
@@ -74,6 +116,9 @@ export default function Signup() {
                   type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
                   className="w-full rounded-xl border border-slate-700 bg-[#0A1328] py-3 px-4 pr-12 text-white outline-none focus:border-violet-500"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
                 />
                 <button
                   type="button"
@@ -98,6 +143,9 @@ export default function Signup() {
                   type={showConfirmPassword ? "text" : "password"}
                   placeholder="••••••••"
                   className="w-full rounded-xl border border-slate-700 bg-[#0A1328] py-3 px-4 pr-12 text-white outline-none focus:border-violet-500"
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
                 />
                 <button
                   type="button"

@@ -3,9 +3,16 @@ const dotenv = require("dotenv");
 const indexRouter = require("./routes/indexRouter");
 const authRouter = require("./routes/authRouter");
 const connectDB = require("./config/db.js");
+const cors = require("cors");
 const app = express();
 dotenv.config();
 
+app.use(
+  cors({
+    origin: [process.env.CLIENT_URL],
+    credentials: true,
+  }),
+);
 app.use(express.json()); //this middleware allows json data to be transfer or recieve
 app.use("/", indexRouter);
 app.use("/api/auth", authRouter);
