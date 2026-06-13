@@ -38,6 +38,15 @@ export default function Signup() {
         `${API_BASE_URL}/api/auth/register`,
         payload,
       );
+      if (response.status === 201) {
+        setFormData({
+          fullName: "",
+          email: "",
+          password: "",
+          confirmPassword: "",
+        });
+        navigate("/login");
+      }
       console.log(response.data);
     } catch (error) {
       console.log(error.response.data);

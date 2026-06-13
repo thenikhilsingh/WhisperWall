@@ -8,18 +8,20 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
-import LandingPage from "./components/LandingPage.jsx";
+import Home from "./components/Home.jsx";
 import Login from "./components/Login.jsx";
 import Signup from "./components/Signup.jsx";
 import JoinClub from "./components/JoinClub.jsx";
+import Error from "./components/Error.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
-      <Route path="" element={<LandingPage />}></Route>
+      <Route path="" element={<Home />}></Route>
       <Route path="/login" element={<Login />}></Route>
       <Route path="/signup" element={<Signup />}></Route>
       <Route path="/join-club" element={<JoinClub />}></Route>
+      <Route path="*" element={<Error />}></Route>
     </Route>,
   ),
 );

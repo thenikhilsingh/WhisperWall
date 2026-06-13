@@ -1,8 +1,39 @@
 import { LockKeyhole, Eye } from "lucide-react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function Login() {
   const navigate = useNavigate();
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        `${API_BASE_URL}/api/auth/login`,
+        formData,
+      );
+      if (response.status === 200) {
+        setFormData({
+          email: "",
+          password: "",
+        });
+        navigate("/");
+      }
+      console.log(response.data);
+    } catch (error) {
+      console.log(error.response.data);
+    }
+  };
+
   return (
     <div
       className="min-h-screen flex items-center justify-center bg-cover bg-center"
@@ -28,7 +59,7 @@ export default function Login() {
         </p>
 
         {/* Form */}
-        <form className="mt-8 space-y-5">
+        <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-1">
               Email
@@ -38,6 +69,9 @@ export default function Login() {
               type="email"
               placeholder="you@example.com"
               className="w-full rounded-xl border border-slate-700 bg-[#0A1328] py-3 px-4 text-white outline-none focus:border-violet-500"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
             />
           </div>
 
@@ -51,6 +85,9 @@ export default function Login() {
                 type="password"
                 placeholder="••••••••••"
                 className="w-full rounded-xl border border-slate-700 bg-[#0A1328] py-3 px-4 pr-12 text-white outline-none focus:border-violet-500"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
               />
 
               <Eye className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-500 cursor-pointer" />
