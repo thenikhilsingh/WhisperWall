@@ -13,6 +13,7 @@ import Login from "./components/Login.jsx";
 import Signup from "./components/Signup.jsx";
 import JoinClub from "./components/JoinClub.jsx";
 import Error from "./components/Error.jsx";
+import Logout from "./components/Logout.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -21,6 +22,7 @@ const router = createBrowserRouter(
       <Route path="/login" element={<Login />}></Route>
       <Route path="/signup" element={<Signup />}></Route>
       <Route path="/join-club" element={<JoinClub />}></Route>
+      <Route path="/logout" element={<Logout />}></Route>
       <Route path="*" element={<Error />}></Route>
     </Route>,
   ),
