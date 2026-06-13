@@ -1,7 +1,8 @@
 import { LockKeyhole, Eye, EyeOff } from "lucide-react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { AuthContext } from "../App";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -14,6 +15,8 @@ export default function Signup() {
     password: "",
     confirmPassword: "",
   });
+
+  const { storeTokenInLS } = useContext(AuthContext);
 
   const handleChange = (e) => {
     setFormData({
@@ -39,6 +42,7 @@ export default function Signup() {
         payload,
       );
       if (response.status === 201) {
+        storeTokenInLS(response.data.token);
         setFormData({
           fullName: "",
           email: "",

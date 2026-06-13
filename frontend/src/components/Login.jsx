@@ -1,7 +1,8 @@
 import { LockKeyhole, Eye } from "lucide-react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { AuthContext } from "../App";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -10,6 +11,9 @@ export default function Login() {
     email: "",
     password: "",
   });
+
+  const { storeTokenInLS } = useContext(AuthContext);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -22,6 +26,7 @@ export default function Login() {
         formData,
       );
       if (response.status === 200) {
+        storeTokenInLS(response.data.token);
         setFormData({
           email: "",
           password: "",

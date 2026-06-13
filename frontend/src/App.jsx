@@ -1,12 +1,17 @@
 import { Outlet } from "react-router-dom";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
+import { createContext } from "react";
+
+export const AuthContext = createContext();
+
+const storeTokenInLS = (serverToken) => {
+  return localStorage.setItem("token", serverToken);
+};
 
 function App() {
   return (
-    <div>
+    <AuthContext.Provider value={{ storeTokenInLS }}>
       <Outlet />
-    </div>
+    </AuthContext.Provider>
   );
 }
 
