@@ -5,7 +5,7 @@ import { AuthContext } from "../App";
 
 export default function Header() {
   const navigate = useNavigate();
-  const { isLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn, user } = useContext(AuthContext);
   return (
     <div className="flex justify-around items-center inset-0 bg-[#00030D] text-white sticky z-50 p-4">
       <div className="flex items-center justify-center gap-1">
@@ -34,15 +34,14 @@ export default function Header() {
             >
               Log out
             </button>
-            <button
+            <div
               className="bg-linear-to-r from-violet-600 to-purple-500
   shadow-[0_0_20px_rgba(139,92,246,0.35)]
   rounded-xl px-8 py-3 font-semibold text-white
    transition-all"
-              onClick={() => navigate("/signup")}
             >
-              Hello, User
-            </button>
+              Hello, {user.fullName}
+            </div>
           </>
         ) : (
           <>
