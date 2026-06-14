@@ -40,7 +40,7 @@ export default function Header() {
   rounded-xl px-8 py-3 font-semibold text-white
    transition-all"
             >
-              Hello, {user.fullName}
+              Hello, {user?.fullName}
             </div>
           </>
         ) : (

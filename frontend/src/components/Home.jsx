@@ -4,6 +4,7 @@ import Footer from "./Footer";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../App";
+import MessageCard from "./MessageCard";
 
 export default function LandingPage() {
   const navigate = useNavigate();
@@ -107,49 +108,48 @@ export default function LandingPage() {
       <div className="bg-[#020817] px-24 py-10 text-white">
         <div className="flex items-center justify-between mb-8">
           <h2 className="text-3xl font-bold">Latest Anonymous Posts</h2>
-
-          <button className="text-violet-400 hover:text-violet-300 transition">
-            View all posts →
-          </button>
+          <div className="flex gap-4">
+            {isLoggedIn ? (
+              <button
+                onClick={() => navigate("/create-message")}
+                className="px-5 py-2 bg-violet-600 hover:bg-violet-700 rounded-lg font-medium"
+              >
+                + Create Message
+              </button>
+            ) : (
+              <button className="text-violet-400 hover:text-violet-300 transition">
+                View all posts →
+              </button>
+            )}
+          </div>
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
           {[
             {
+              _id: 1,
               title: "The future belongs to those who learn more skills...",
               desc: "Keep learning. Keep building. The compound effect is real.",
               time: "2h ago",
             },
             {
+              _id: 2,
               title: "Sometimes you have to walk away to grow.",
               desc: "Not every chapter deserves a sequel.",
               time: "5h ago",
             },
             {
+              _id: 3,
               title: "What's one decision that changed your life?",
               desc: "I'll go first. Moving out of my comfort zone.",
               time: "1d ago",
             },
-          ].map((post, index) => (
-            <div
-              key={index}
-              className="rounded-2xl border border-slate-800 bg-[#071124] p-6 hover:border-violet-500/40 transition"
-            >
-              <h3 className="font-semibold text-lg leading-relaxed">
-                {post.title}
-              </h3>
-
-              <p className="mt-3 text-gray-400 text-sm">{post.desc}</p>
-
-              <div className="mt-8 flex items-center justify-between text-sm text-gray-500">
-                <div className="flex items-center gap-2">
-                  <User size={16} />
-                  Anonymous
-                </div>
-
-                <span>{post.time}</span>
-              </div>
-            </div>
+          ].map((post) => (
+            <MessageCard
+              key={post._id}
+              post={post}
+              isAdmin={true} // show delete button
+            />
           ))}
         </div>
       </div>
