@@ -5,10 +5,36 @@ import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../App";
 import MessageCard from "./MessageCard";
+import axios from "axios";
+import { useState } from "react";
+import { useEffect } from "react";
 
 export default function LandingPage() {
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const navigate = useNavigate();
-  const { isLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn, user } = useContext(AuthContext);
+  const [messages, setMessages] = useState([]);
+
+  const getAllMsg = async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/api/messages`);
+      setMessages(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    getAllMsg();
+  }, []);
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`${API_BASE_URL}/api/messages/delete/${id}`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div>
       <Header />
@@ -117,7 +143,10 @@ export default function LandingPage() {
                 + Create Message
               </button>
             ) : (
-              <button className="text-violet-400 hover:text-violet-300 transition">
+              <button
+                onClick={() => navigate("/login")}
+                className="text-violet-400 hover:text-violet-300 transition"
+              >
                 View all posts →
               </button>
             )}
@@ -125,32 +154,27 @@ export default function LandingPage() {
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
-          {[
-            {
-              _id: 1,
-              title: "The future belongs to those who learn more skills...",
-              desc: "Keep learning. Keep building. The compound effect is real.",
-              time: "2h ago",
-            },
-            {
-              _id: 2,
-              title: "Sometimes you have to walk away to grow.",
-              desc: "Not every chapter deserves a sequel.",
-              time: "5h ago",
-            },
-            {
-              _id: 3,
-              title: "What's one decision that changed your life?",
-              desc: "I'll go first. Moving out of my comfort zone.",
-              time: "1d ago",
-            },
-          ].map((post) => (
-            <MessageCard
-              key={post._id}
-              post={post}
-              isAdmin={true} // show delete button
-            />
-          ))}
+          {isLoggedIn
+            ? messages.map((post) => (
+                <MessageCard
+                  key={post._id}
+                  post={post}
+                  isAdmin={false}
+                  isClubMember={user?.isClubMember}
+                  handleDelete={handleDelete}
+                />
+              ))
+            : messages
+                .map((post) => (
+                  <MessageCard
+                    key={post._id}
+                    post={post}
+                    isAdmin={false}
+                    isClubMember={user?.isClubMember}
+                    handleDelete={handleDelete}
+                  />
+                ))
+                .slice(0, 3)}
         </div>
       </div>
       <Footer />
