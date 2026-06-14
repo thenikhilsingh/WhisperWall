@@ -2,9 +2,12 @@ import { LockKeyhole, UserRound, Users, ShieldCheck, User } from "lucide-react";
 import Header from "./Header";
 import Footer from "./Footer";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../App";
 
 export default function LandingPage() {
   const navigate = useNavigate();
+  const { isLoggedIn } = useContext(AuthContext);
   return (
     <div>
       <Header />
@@ -41,12 +44,14 @@ export default function LandingPage() {
               >
                 Join the Club
               </button>
-              <button
-                className="px-8 py-4 rounded-xl border border-slate-800 bg-[#050B1A] text-white font-semibold hover:border-slate-700 transition"
-                onClick={() => navigate("/login")}
-              >
-                Log in
-              </button>
+              {!isLoggedIn && (
+                <button
+                  className="px-8 py-4 rounded-xl border border-slate-800 bg-[#050B1A] text-white font-semibold hover:border-slate-700 transition"
+                  onClick={() => navigate("/login")}
+                >
+                  Log in
+                </button>
+              )}
             </div>
             <div className="mt-8 flex justify-center gap-15">
               <div className="flex items-start gap-5 rounded-2xl p-5">

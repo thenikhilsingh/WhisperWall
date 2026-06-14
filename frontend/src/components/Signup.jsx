@@ -9,6 +9,7 @@ export default function Signup() {
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -27,8 +28,11 @@ export default function Signup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrors({});
     if (formData.password !== formData.confirmPassword) {
-      console.error("Password do not match!");
+      setErrors({
+        confirmPassword: "Passwords do not match",
+      });
       return;
     }
     const payload = {
@@ -53,7 +57,16 @@ export default function Signup() {
       }
       console.log(response.data);
     } catch (error) {
-      console.log(error.response.data);
+      console.log(error.response.data.errors);
+      if (error.response?.data?.errors) {
+        const backendErrors = {};
+
+        error.response.data.errors.forEach((err) => {
+          backendErrors[err.path] = err.msg;
+        });
+
+        setErrors(backendErrors);
+      }
     }
   };
 
@@ -101,6 +114,9 @@ export default function Signup() {
                 value={formData.fullName}
                 onChange={handleChange}
               />
+              {errors.fullName && (
+                <p className="text-red-500 text-sm mt-1">{errors.fullName}</p>
+              )}
             </div>
             {/* Email */}
             <div>
@@ -115,6 +131,9 @@ export default function Signup() {
                 value={formData.email}
                 onChange={handleChange}
               />
+              {errors.email && (
+                <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+              )}
             </div>
           </div>
 
@@ -145,6 +164,9 @@ export default function Signup() {
                   )}
                 </button>
               </div>
+              {errors.password && (
+                <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+              )}
             </div>
             {/* Confirm Password */}
             <div>
@@ -160,6 +182,7 @@ export default function Signup() {
                   value={formData.confirmPassword}
                   onChange={handleChange}
                 />
+
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
@@ -172,14 +195,13 @@ export default function Signup() {
                   )}
                 </button>
               </div>
+              {errors.confirmPassword && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.confirmPassword}
+                </p>
+              )}
             </div>
           </div>
-
-          {/* Terms */}
-          <label className="flex items-center gap-2 text-sm text-slate-300">
-            <input type="checkbox" className="accent-violet-500" />I agree to
-            the Terms & Conditions
-          </label>
 
           {/* Signup Button */}
           <button

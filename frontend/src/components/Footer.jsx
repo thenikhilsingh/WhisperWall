@@ -1,31 +1,38 @@
 import { LockKeyhole } from "lucide-react";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../App";
 
 export default function Footer() {
   const navigate = useNavigate();
+  const { isLoggedIn } = useContext(AuthContext);
   return (
     <div className="bg-[#020817] text-white">
       {/* CTA Section */}
-      <div className="bg-[#020817] px-24 py-5 text-white">
-        <div className="mt-12 rounded-3xl bg-linear-to-r from-[#17105A] to-[#0B1A4D] p-10 flex items-center justify-between">
-          <div>
-            <h3 className="text-3xl font-bold">Ready to join the community?</h3>
-            <p className="mt-3 text-gray-300">
-              Create an account and become a member to see authors,
-              <br />
-              post your thoughts and connect with others.
-            </p>
+      {!isLoggedIn && (
+        <div className="bg-[#020817] px-24 py-5 text-white">
+          <div className="rounded-3xl bg-linear-to-r from-[#17105A] to-[#0B1A4D] p-10 flex items-center justify-between">
+            <div>
+              <h3 className="text-3xl font-bold">
+                Ready to join the community?
+              </h3>
+              <p className="mt-3 text-gray-300">
+                Create an account and become a member to see authors,
+                <br />
+                post your thoughts and connect with others.
+              </p>
+            </div>
+            <button
+              className="bg-violet-600 hover:bg-violet-500 px-8 py-4 rounded-xl font-semibold transition"
+              onClick={() => navigate("/signup")}
+            >
+              Sign up now
+            </button>
           </div>
-          <button
-            className="bg-violet-600 hover:bg-violet-500 px-8 py-4 rounded-xl font-semibold transition"
-            onClick={() => navigate("/signup")}
-          >
-            Sign up now
-          </button>
         </div>
-      </div>
+      )}
 
-      <div className="mt-20 border-t border-slate-800 px-24 pt-10">
+      <div className=" border-t border-slate-800 px-24 pt-10">
         <div className="grid md:grid-cols-5 gap-10">
           <div>
             <div className="flex items-center gap-2">

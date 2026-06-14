@@ -7,6 +7,7 @@ import { AuthContext } from "../App";
 export default function Login() {
   const navigate = useNavigate();
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -36,6 +37,15 @@ export default function Login() {
       console.log(response.data);
     } catch (error) {
       console.log(error.response.data);
+      if (error.response?.data?.errors) {
+        const backendErrors = {};
+
+        error.response.data.errors.forEach((err) => {
+          backendErrors[err.path] = err.msg;
+        });
+
+        setErrors(backendErrors);
+      }
     }
   };
 
@@ -78,6 +88,9 @@ export default function Login() {
               value={formData.email}
               onChange={handleChange}
             />
+            {errors.email && (
+              <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+            )}
           </div>
 
           <div>
@@ -97,21 +110,9 @@ export default function Login() {
 
               <Eye className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-500 cursor-pointer" />
             </div>
-          </div>
-
-          {/* Remember + Forgot */}
-          <div className="flex items-center justify-between">
-            <label className="flex items-center gap-2 text-sm text-slate-300">
-              <input type="checkbox" className="accent-violet-500" />
-              Remember me
-            </label>
-
-            <button
-              type="button"
-              className="text-sm text-violet-400 hover:text-violet-300"
-            >
-              Forgot password?
-            </button>
+            {errors.password && (
+              <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+            )}
           </div>
 
           {/* Login Button */}
