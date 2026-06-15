@@ -6,6 +6,7 @@ const connectDB = require("./config/db.js");
 const cors = require("cors");
 const messageRouter = require("./routes/messageRouter.js");
 const joinClubRouter = require("./routes/joinClubRouter.js");
+const adminRouter = require("./routes/adminRouter.js");
 const app = express();
 dotenv.config();
 
@@ -20,6 +21,7 @@ app.use("/", indexRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/messages", messageRouter);
 app.use("/api/join-club", joinClubRouter);
+app.use("/api/admin", adminRouter);
 
 const PORT = process.env.PORT;
 connectDB().then(() => {
