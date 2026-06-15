@@ -1,9 +1,39 @@
 import { ShieldCheck, Eye, EyeOff } from "lucide-react";
+import { useContext } from "react";
 import { useState } from "react";
+import { AuthContext } from "../App";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function BecomeAnAdmin() {
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  const { user, token } = useContext(AuthContext);
   const [showPassword, setShowPassword] = useState(false);
   const [adminCode, setAdminCode] = useState("");
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.put(
+        `${API_BASE_URL}/api/admin/become-an-admin/${user._id}`,
+        {
+          userEnteredPassword: adminCode,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      if (response.status == 200) {
+        setAdminCode("");
+        navigate("/admin/dashboard");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div
@@ -12,7 +42,10 @@ export default function BecomeAnAdmin() {
         backgroundImage: "url('/WallBG.png')",
       }}
     >
-      <div className="w-full max-w-md rounded-3xl border border-slate-800 bg-[#071124]/95 backdrop-blur-md p-8 shadow-2xl">
+      <form
+        onSubmit={handleSubmit}
+        className="w-full max-w-md rounded-3xl border border-slate-800 bg-[#071124]/95 backdrop-blur-md p-8 shadow-2xl"
+      >
         {/* Icon */}
         <div className="flex justify-center">
           <div className="flex h-20 w-20 items-center justify-center rounded-full bg-violet-500/20 border border-violet-500/30">
@@ -63,7 +96,10 @@ export default function BecomeAnAdmin() {
         </div>
 
         {/* Button */}
-        <button className="mt-6 w-full rounded-xl bg-linear-to-r from-violet-600 to-purple-500 py-3 font-semibold text-white transition hover:opacity-90">
+        <button
+          type="submit"
+          className="mt-6 w-full rounded-xl bg-linear-to-r from-violet-600 to-purple-500 py-3 font-semibold text-white transition hover:opacity-90"
+        >
           Unlock Admin Access
         </button>
 
@@ -72,7 +108,7 @@ export default function BecomeAnAdmin() {
           <p>Restricted Area</p>
           <p>Only authorized members can become administrators.</p>
         </div>
-      </div>
+      </form>
     </div>
   );
 }

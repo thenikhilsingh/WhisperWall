@@ -12,7 +12,7 @@ import { useEffect } from "react";
 export default function LandingPage() {
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const navigate = useNavigate();
-  const { isLoggedIn, user } = useContext(AuthContext);
+  const { isLoggedIn, user, token } = useContext(AuthContext);
   const [messages, setMessages] = useState([]);
 
   const getAllMsg = async () => {
@@ -29,7 +29,12 @@ export default function LandingPage() {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`${API_BASE_URL}/api/messages/delete/${id}`);
+      await axios.delete(`${API_BASE_URL}/api/admin/messages/delete/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setMessages((prev) => prev.filter((msg) => msg._id !== id));
     } catch (error) {
       console.log(error);
     }
@@ -159,7 +164,7 @@ export default function LandingPage() {
                 <MessageCard
                   key={post._id}
                   post={post}
-                  isAdmin={false}
+                  isAdmin={user?.isAdmin}
                   isClubMember={user?.isClubMember}
                   handleDelete={handleDelete}
                 />
@@ -169,7 +174,7 @@ export default function LandingPage() {
                   <MessageCard
                     key={post._id}
                     post={post}
-                    isAdmin={false}
+                    isAdmin={user?.isAdmin}
                     isClubMember={user?.isClubMember}
                     handleDelete={handleDelete}
                   />

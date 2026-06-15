@@ -46,4 +46,15 @@ const getAllMessages = async (req, res) => {
     res.status(500).json({ message: "Internal server error!" });
   }
 };
-module.exports = { becomeAnAdmin, getAllUsers, getAllMessages };
+
+const deleteMessage = async (req, res) => {
+  try {
+    const { id } = req.params;
+    await Message.findByIdAndDelete(id);
+    res.status(200).json({ message: "message deleted successfully!" });
+  } catch (error) {
+    res.status(500).json({ message: "message is not deleted!" });
+  }
+};
+
+module.exports = { becomeAnAdmin, getAllUsers, getAllMessages, deleteMessage };

@@ -42,7 +42,7 @@ function App() {
   }, []);
   return (
     <AuthContext.Provider
-      value={{ storeTokenInLS, LogoutUser, isLoggedIn, user }}
+      value={{ storeTokenInLS, LogoutUser, isLoggedIn, user, token }}
     >
       <Outlet />
     </AuthContext.Provider>

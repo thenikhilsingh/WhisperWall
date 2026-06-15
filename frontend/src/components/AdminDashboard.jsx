@@ -6,80 +6,103 @@ import {
   Settings,
   Crown,
 } from "lucide-react";
-import { useState } from "react";
-
-const users = [
-  {
-    id: 1,
-    name: "Nikhil Singh",
-    email: "nikhil@gmail.com",
-    isClubMember: true,
-    isAdmin: true,
-  },
-  {
-    id: 2,
-    name: "John Doe",
-    email: "john@gmail.com",
-    isClubMember: true,
-    isAdmin: false,
-  },
-  {
-    id: 3,
-    name: "Sarah Wilson",
-    email: "sarah@gmail.com",
-    isClubMember: false,
-    isAdmin: false,
-  },
-];
-
-const messages = [
-  {
-    id: 1,
-    title: "Welcome to WhisperWall",
-    author: "Nikhil Singh",
-    date: "15 Jun 2026",
-  },
-  {
-    id: 2,
-    title: "Learning MERN Stack",
-    author: "John Doe",
-    date: "14 Jun 2026",
-  },
-  {
-    id: 3,
-    title: "Club Secret Meeting",
-    author: "Sarah Wilson",
-    date: "13 Jun 2026",
-  },
-];
-
-const members = users.filter((user) => user.isClubMember);
+import { useContext, useEffect, useState } from "react";
+import axios from "axios";
+import { AuthContext } from "../App";
 
 export default function AdminPanel() {
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const [activeTab, setActiveTab] = useState("dashboard");
+  const { token } = useContext(AuthContext);
+  const [allUsers, setAllUsers] = useState([]);
+  const [allMessages, setAllMessages] = useState([]);
+  const [allClubMembers, setAllClubMembers] = useState([]);
+  const [allAdmins, setAllAdmins] = useState([]);
+
+  const getAllUsers = async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/api/admin/users`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setAllUsers(response.data.allUsers);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const getAllMessages = async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/api/admin/messages`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setAllMessages(response.data.allMessages);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getAllClubMembers = () => {
+    const members = allUsers.filter((users) => {
+      return users.isClubMember === true;
+    });
+    setAllClubMembers(members);
+  };
+
+  useEffect(() => {
+    getAllUsers();
+    getAllMessages();
+  }, []);
+
+  useEffect(() => {
+    getAllClubMembers();
+  }, [allUsers]);
+
+  useEffect(() => {
+    const Admins = allUsers.filter((admins) => {
+      return admins.isAdmin === true;
+    });
+    setAllAdmins(Admins);
+  }, [allUsers]);
 
   const stats = [
     {
       title: "Total Users",
-      value: 26,
+      value: allUsers.length,
       icon: <Users size={28} />,
     },
     {
       title: "Club Members",
-      value: 12,
+      value: allClubMembers.length,
       icon: <ShieldCheck size={28} />,
     },
     {
       title: "Messages",
-      value: 89,
+      value: allMessages.length,
       icon: <MessageSquare size={28} />,
     },
     {
       title: "Admins",
-      value: 2,
+      value: allAdmins.length,
       icon: <Crown size={28} />,
     },
   ];
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`${API_BASE_URL}/api/admin/messages/delete/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setAllMessages((prev) => prev.filter((message) => message._id !== id));
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#020817] text-white flex">
@@ -129,16 +152,6 @@ export default function AdminPanel() {
             <ShieldCheck size={20} />
             Members
           </button>
-
-          <button
-            onClick={() => setActiveTab("settings")}
-            className={`flex items-center gap-3 px-4 py-3 rounded-xl ${
-              activeTab === "settings" ? "bg-violet-600" : "hover:bg-slate-800"
-            }`}
-          >
-            <Settings size={20} />
-            Settings
-          </button>
         </div>
       </aside>
 
@@ -167,14 +180,29 @@ export default function AdminPanel() {
             </div>
 
             <div className="grid grid-cols-2 gap-6 mt-8">
-              <div className="bg-[#071124] border border-slate-800 rounded-2xl p-6">
-                <h2 className="text-xl font-semibold mb-4">Recent Activity</h2>
+              <div className="relative overflow-hidden bg-linear-to-br from-violet-600 via-indigo-600 to-blue-600 rounded-3xl p-8 border border-white/10 shadow-2xl">
+                {/* Background Decoration */}
+                <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-3xl"></div>
+                <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
 
-                <div className="space-y-4 text-slate-300">
-                  <p>📝 New message created</p>
-                  <p>⭐ User joined club</p>
-                  <p>🛡 New admin created</p>
-                  <p>🗑 Message deleted</p>
+                {/* Badge */}
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20">
+                  <Crown size={16} />
+                  <span className="text-sm font-medium">
+                    Administrator Panel
+                  </span>
+                </div>
+
+                {/* Main Content */}
+                <div className="mt-6">
+                  <h2 className="text-4xl font-bold tracking-tight">
+                    Welcome Back 👋
+                  </h2>
+
+                  <p className="mt-3 text-white/80 text-lg max-w-md">
+                    Manage users, moderate messages, and keep your community
+                    running smoothly from one place.
+                  </p>
                 </div>
               </div>
 
@@ -216,9 +244,9 @@ export default function AdminPanel() {
               </thead>
 
               <tbody>
-                {users.map((user) => (
+                {allUsers.map((user) => (
                   <tr key={user.id} className="border-b border-slate-800">
-                    <td className="py-4">{user.name}</td>
+                    <td className="py-4">{user.fullName}</td>
                     <td>{user.email}</td>
 
                     <td>
@@ -251,6 +279,7 @@ export default function AdminPanel() {
               <thead>
                 <tr className="border-b border-slate-800 text-slate-400">
                   <th className="text-left py-4">Title</th>
+                  <th className="text-left py-4">Text</th>
                   <th className="text-left py-4">Author</th>
                   <th className="text-left py-4">Date</th>
                   <th className="text-left py-4">Action</th>
@@ -258,16 +287,30 @@ export default function AdminPanel() {
               </thead>
 
               <tbody>
-                {messages.map((message) => (
+                {allMessages.map((message) => (
                   <tr key={message.id} className="border-b border-slate-800">
                     <td className="py-4">{message.title}</td>
 
-                    <td>{message.author}</td>
+                    <td className="py-4">{message.text}</td>
 
-                    <td>{message.date}</td>
+                    <td>{message.author.fullName}</td>
 
                     <td>
-                      <button className="px-3 py-1 bg-red-500 rounded-lg">
+                      {new Date(message.createdAt).toLocaleString("en-IN", {
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric",
+                        hour: "numeric",
+                        minute: "2-digit",
+                        hour12: true,
+                      })}
+                    </td>
+
+                    <td>
+                      <button
+                        onClick={() => handleDelete(message._id)}
+                        className="px-3 py-1 bg-red-500 rounded-lg"
+                      >
                         Delete
                       </button>
                     </td>
@@ -283,12 +326,12 @@ export default function AdminPanel() {
             <h1 className="text-3xl font-bold mb-6">Club Members</h1>
 
             <div className="grid md:grid-cols-3 gap-6">
-              {members.map((member) => (
+              {allClubMembers.map((member) => (
                 <div
                   key={member.id}
                   className="bg-[#020817] border border-slate-700 rounded-xl p-5"
                 >
-                  <h2 className="font-bold text-lg">{member.name}</h2>
+                  <h2 className="font-bold text-lg">{member.fullName}</h2>
 
                   <p className="text-slate-400">{member.email}</p>
 
@@ -299,24 +342,6 @@ export default function AdminPanel() {
                   </div>
                 </div>
               ))}
-            </div>
-          </div>
-        )}
-
-        {activeTab === "settings" && (
-          <div className="bg-[#071124] border border-slate-800 rounded-2xl p-6">
-            <h1 className="text-3xl font-bold mb-6">Settings</h1>
-
-            <div className="space-y-4">
-              <input
-                placeholder="Club Password"
-                className="w-full p-3 rounded-xl bg-[#020817] border border-slate-700"
-              />
-
-              <input
-                placeholder="Admin Password"
-                className="w-full p-3 rounded-xl bg-[#020817] border border-slate-700"
-              />
             </div>
           </div>
         )}

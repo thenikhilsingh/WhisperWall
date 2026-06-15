@@ -29,14 +29,4 @@ const postMessage = async (req, res) => {
   }
 };
 
-const deleteMessage = async (req, res) => {
-  try {
-    const { id } = req.params;
-    await Message.findByIdAndDelete(id);
-    res.status(200).json({ message: "message deleted successfully!" });
-  } catch (error) {
-    res.status(500).json({ message: "message is not deleted!" });
-  }
-};
-
-module.exports = { getAllMessages, postMessage, deleteMessage };
+module.exports = { getAllMessages, postMessage };
