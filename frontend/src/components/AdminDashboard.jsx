@@ -9,11 +9,12 @@ import {
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../App";
+import { Navigate } from "react-router-dom";
 
 export default function AdminPanel() {
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const [activeTab, setActiveTab] = useState("dashboard");
-  const { token } = useContext(AuthContext);
+  const { user, token, isLoading } = useContext(AuthContext);
   const [allUsers, setAllUsers] = useState([]);
   const [allMessages, setAllMessages] = useState([]);
   const [allClubMembers, setAllClubMembers] = useState([]);
@@ -103,6 +104,14 @@ export default function AdminPanel() {
       console.log(error);
     }
   };
+
+  if(isLoading){
+    return <h1>Loading...</h1>
+  }
+
+  if (!user.isAdmin) {
+    return <Navigate to="/" />;
+  }
 
   return (
     <div className="min-h-screen bg-[#020817] text-white flex">
