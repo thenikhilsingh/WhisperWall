@@ -8,19 +8,24 @@ import MessageCard from "./MessageCard";
 import axios from "axios";
 import { useState } from "react";
 import { useEffect } from "react";
+import LoadingScreen from "./LoadingScreen";
 
 export default function LandingPage() {
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const navigate = useNavigate();
   const { isLoggedIn, user, token } = useContext(AuthContext);
   const [messages, setMessages] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const getAllMsg = async () => {
     try {
+      setLoading(true);
       const response = await axios.get(`${API_BASE_URL}/api/messages`);
       setMessages(response.data.data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
   useEffect(() => {
@@ -39,6 +44,10 @@ export default function LandingPage() {
       console.log(error);
     }
   };
+
+  if (loading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <div>
