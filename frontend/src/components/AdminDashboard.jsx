@@ -10,6 +10,7 @@ import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../App";
 import { Navigate } from "react-router-dom";
+import LoadingScreen from "./LoadingScreen";
 
 export default function AdminPanel() {
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -105,8 +106,8 @@ export default function AdminPanel() {
     }
   };
 
-  if(isLoading){
-    return <h1>Loading...</h1>
+  if (isLoading) {
+    return <LoadingScreen />;
   }
 
   if (!user.isAdmin) {

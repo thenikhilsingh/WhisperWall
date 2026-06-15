@@ -17,11 +17,12 @@ export default function Header() {
           Whisper<span className="text-violet-500">Wall</span>
         </div>
       </div>
-      <div className="flex gap-5">
-        <div>Home</div>
-        <div>About</div>
-        <div>How it Works</div>
-        <div>Community</div>
+      <div className="hidden lg:flex items-center gap-2 text-sm">
+        <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+        <span className="text-slate-400">
+          Share Secrets.{" "}
+          <span className="text-violet-400">Stay Anonymous.</span>
+        </span>
       </div>
       <div className="flex gap-2">
         {isLoggedIn ? (

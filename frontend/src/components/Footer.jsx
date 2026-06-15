@@ -32,58 +32,18 @@ export default function Footer() {
         </div>
       )}
 
-      <div className=" border-t border-slate-800 px-24 pt-10">
-        <div className="grid md:grid-cols-5 gap-10">
-          <div>
-            <div className="flex items-center gap-2">
-              <LockKeyhole className="text-violet-400" />
-              <span className="font-bold">WisperWall</span>
-            </div>
-            <p className="mt-4 text-gray-400 text-sm">
-              A private space for honest thoughts and meaningful connections.
-            </p>
+      <div className="border-t border-slate-800 py-8">
+        <div className="flex flex-col items-center gap-4">
+          <div className="flex items-center gap-2">
+            <LockKeyhole className="text-violet-400 h-5 w-5" />
+            <span className="text-xl font-bold text-white">WhisperWall</span>
           </div>
-          <div>
-            <h4 className="font-semibold mb-4">Explore</h4>
-            <ul className="space-y-2 text-gray-400">
-              <li>Home</li>
-              <li>About</li>
-              <li>How It Works</li>
-              <li>Community</li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-semibold mb-4">Support</h4>
-            <ul className="space-y-2 text-gray-400">
-              <li>FAQ</li>
-              <li>Guidelines</li>
-              <li>Contact</li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-semibold mb-4">Legal</h4>
-            <ul className="space-y-2 text-gray-400">
-              <li>Terms</li>
-              <li>Privacy</li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-semibold mb-4">Connect</h4>
-            <div className="flex gap-4">
-              <div className="w-10 h-10 rounded-full bg-[#0A1328] flex items-center justify-center">
-                {/* <Icon path={mdiGithub} size={18} /> */}
-              </div>
-              <div className="w-10 h-10 rounded-full bg-[#0A1328] flex items-center justify-center">
-                {/* <Icon path={mdiChatOutline} size={18} /> */}
-              </div>
-              <div className="w-10 h-10 rounded-full bg-[#0A1328] flex items-center justify-center">
-                {/* <Icon path={mdiTwitter} size={18} /> */}
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="mt-10 text-center text-gray-500 text-sm">
-          © 2026 WhisperWall. All rights reserved.
+
+          <div className="w-20 h-px bg-linear-to-r from-transparent via-violet-500 to-transparent" />
+
+          <p className="text-slate-500 text-sm tracking-wide">
+            © 2026 WhisperWall • Every thought deserves a place.
+          </p>
         </div>
       </div>
     </div>

@@ -10,7 +10,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import LoadingScreen from "./LoadingScreen";
 
-export default function LandingPage() {
+export default function Home() {
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const navigate = useNavigate();
   const { isLoggedIn, user, token } = useContext(AuthContext);

@@ -1,4 +1,4 @@
-import { LockKeyhole, Eye } from "lucide-react";
+import { LockKeyhole, Eye, EyeOff } from "lucide-react";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -8,6 +8,7 @@ export default function Login() {
   const navigate = useNavigate();
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const [errors, setErrors] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -100,7 +101,7 @@ export default function Login() {
 
             <div className="relative">
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 placeholder="••••••••••"
                 className="w-full rounded-xl border border-slate-700 bg-[#0A1328] py-3 px-4 pr-12 text-white outline-none focus:border-violet-500"
                 name="password"
@@ -108,7 +109,17 @@ export default function Login() {
                 onChange={handleChange}
               />
 
-              <Eye className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-500 cursor-pointer" />
+              {showPassword ? (
+                <EyeOff
+                  onClick={() => setShowPassword(false)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-500 cursor-pointer hover:text-violet-400"
+                />
+              ) : (
+                <Eye
+                  onClick={() => setShowPassword(true)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-500 cursor-pointer hover:text-violet-400"
+                />
+              )}
             </div>
             {errors.password && (
               <p className="text-red-500 text-sm mt-1">{errors.password}</p>
