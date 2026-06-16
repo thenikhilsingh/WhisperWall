@@ -52,33 +52,33 @@ export default function Home() {
   return (
     <div>
       <Header />
-      <div className="relative h-screen">
+      <div className="relative min-h-screen">
         {/* Background Image */}
-        <div className="absolute inset-0 bg-[url('/MainBG.png')] bg-contain bg-[position:120%_40%] bg-no-repeat" />
+        <div className="absolute inset-0 bg-[url('/MainBG.png')] bg-cover md:bg-contain bg-center md:bg-[position:120%_40%] bg-no-repeat" />
         {/* Black Overlay */}
         <div className="absolute inset-0 bg-linear-to-r from-[#00030D] from-0% via-[#00030D] to-[#00030D]/10 to-60%" />
         {/* Content */}
         <div className="relative z-10 flex h-full text-white">
-          <div className="pl-26 pt-15">
+          <div className="px-6 sm:px-10 lg:px-20 xl:px-28 pt-10 sm:pt-16">
             <div className="flex items-center w-fit gap-2 bg-[#031B3A] border border-[#093064]  py-1 px-3 rounded-lg">
               <LockKeyhole size={20} color="white" />
               <div className="text-lg font-semibold text-cyan-200 uppercase">
                 Exclusive Club
               </div>
             </div>
-            <h1 className="text-6xl font-bold leading-tight text-white">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight text-white">
               A place for real
               <br />
               voices. <span className="text-violet-500">Yours.</span>
             </h1>
-            <p className="mt-6 max-w-xl text-lg text-gray-400 leading-relaxed">
+            <p className="mt-6 max-w-xl text-base sm:text-lg text-gray-400 leading-relaxed">
               Share your thoughts anonymously. Inside the
               <br />
               club, members know who wrote what.
               <br />
               Outside, it's just words.
             </p>
-            <div className="mt-8 flex items-center gap-4">
+            <div className="mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-4">
               <button
                 className="px-8 py-4 rounded-xl bg-linear-to-r from-violet-600 to-purple-500 text-white font-semibold shadow-[0_0_25px_rgba(139,92,246,0.4)] hover:scale-105 transition"
                 onClick={() => navigate("/join-club")}
@@ -94,8 +94,8 @@ export default function Home() {
                 </button>
               )}
             </div>
-            <div className="mt-8 flex justify-center gap-15">
-              <div className="flex items-start gap-5 rounded-2xl p-5">
+            <div className="mt-12 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 max-w-7xl">
+              <div className="flex items-start gap-4 rounded-2xl p-5  backdrop-blur-sm">
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-violet-500/15 border border-violet-500/20">
                   <UserRound className="h-6 w-6 text-violet-400" />
                 </div>
@@ -145,9 +145,11 @@ export default function Home() {
         </div>
       </div>
       {/* Latest Anonymous Posts Section */}
-      <div className="bg-[#020817] px-24 py-10 text-white">
-        <div className="flex items-center justify-between mb-8">
-          <h2 className="text-3xl font-bold">Latest Anonymous Posts</h2>
+      <div className="bg-[#020817] px-4 sm:px-6 md:px-10 lg:px-20 py-10 text-white">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+          <h2 className="text-2xl sm:text-3xl font-bold">
+            Latest Anonymous Posts
+          </h2>
           <div className="flex gap-4">
             {isLoggedIn ? (
               <button
@@ -167,7 +169,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
           {isLoggedIn
             ? messages.map((post) => (
                 <MessageCard

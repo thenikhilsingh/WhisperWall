@@ -115,14 +115,14 @@ export default function AdminPanel() {
   }
 
   return (
-    <div className="min-h-screen bg-[#020817] text-white flex">
+    <div className="min-h-screen bg-[#020817] text-white flex flex-col lg:flex-row">
       {/* Sidebar */}
-      <aside className="w-72 bg-[#071124] border-r border-slate-800 p-6">
-        <h1 className="text-3xl font-bold mb-10">
+      <aside className="w-full lg:w-72 bg-[#071124] border-b lg:border-b-0 lg:border-r border-slate-800 p-4 lg:p-6">
+        <h1 className="text-2xl lg:text-3xl font-bold mb-6 lg:mb-10">
           Whisper<span className="text-violet-500">Wall</span>
         </h1>
 
-        <div className="flex flex-col gap-3">
+        <div className="grid grid-cols-2 lg:flex lg:flex-col gap-3">
           <button
             onClick={() => setActiveTab("dashboard")}
             className={`flex items-center gap-3 px-4 py-3 rounded-xl ${
@@ -166,12 +166,14 @@ export default function AdminPanel() {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 p-8">
+      <main className="flex-1 p-4 sm:p-6 lg:p-8">
         {activeTab === "dashboard" && (
           <>
-            <h1 className="text-4xl font-bold">Admin Dashboard</h1>
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold">
+              Admin Dashboard
+            </h1>
 
-            <div className="grid grid-cols-4 gap-6 mt-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mt-8">
               {stats.map((item) => (
                 <div
                   key={item.title}
@@ -180,7 +182,9 @@ export default function AdminPanel() {
                   <div className="flex justify-between">
                     <div>
                       <p className="text-slate-400">{item.title}</p>
-                      <h2 className="text-4xl font-bold mt-2">{item.value}</h2>
+                      <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mt-2">
+                        {item.value}
+                      </h2>
                     </div>
 
                     <div className="text-violet-400">{item.icon}</div>
@@ -189,7 +193,7 @@ export default function AdminPanel() {
               ))}
             </div>
 
-            <div className="grid grid-cols-2 gap-6 mt-8">
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mt-8">
               <div className="relative overflow-hidden bg-linear-to-br from-violet-600 via-indigo-600 to-blue-600 rounded-3xl p-8 border border-white/10 shadow-2xl">
                 {/* Background Decoration */}
                 <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-3xl"></div>
@@ -205,7 +209,7 @@ export default function AdminPanel() {
 
                 {/* Main Content */}
                 <div className="mt-6">
-                  <h2 className="text-4xl font-bold tracking-tight">
+                  <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight">
                     Welcome Back 👋
                   </h2>
 
@@ -243,41 +247,43 @@ export default function AdminPanel() {
           <div className="bg-[#071124] border border-slate-800 rounded-2xl p-6">
             <h1 className="text-3xl font-bold mb-6">Users</h1>
 
-            <table className="w-full">
-              <thead>
-                <tr className="border-b border-slate-800 text-slate-400">
-                  <th className="text-left py-4">Name</th>
-                  <th className="text-left py-4">Email</th>
-                  <th className="text-left py-4">Member</th>
-                  <th className="text-left py-4">Admin</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {allUsers.map((user) => (
-                  <tr key={user.id} className="border-b border-slate-800">
-                    <td className="py-4">{user.fullName}</td>
-                    <td>{user.email}</td>
-
-                    <td>
-                      {user.isClubMember ? (
-                        <span className="text-green-400">Yes</span>
-                      ) : (
-                        <span className="text-red-400">No</span>
-                      )}
-                    </td>
-
-                    <td>
-                      {user.isAdmin ? (
-                        <span className="text-violet-400">Admin</span>
-                      ) : (
-                        <span>User</span>
-                      )}
-                    </td>
+            <div className="overflow-x-auto">
+              <table className="w-full min-w-175">
+                <thead>
+                  <tr className="border-b border-slate-800 text-slate-400">
+                    <th className="text-left py-4">Name</th>
+                    <th className="text-left py-4">Email</th>
+                    <th className="text-left py-4">Member</th>
+                    <th className="text-left py-4">Admin</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+
+                <tbody>
+                  {allUsers.map((user) => (
+                    <tr key={user.id} className="border-b border-slate-800">
+                      <td className="py-4">{user.fullName}</td>
+                      <td>{user.email}</td>
+
+                      <td>
+                        {user.isClubMember ? (
+                          <span className="text-green-400">Yes</span>
+                        ) : (
+                          <span className="text-red-400">No</span>
+                        )}
+                      </td>
+
+                      <td>
+                        {user.isAdmin ? (
+                          <span className="text-violet-400">Admin</span>
+                        ) : (
+                          <span>User</span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
 
@@ -285,49 +291,51 @@ export default function AdminPanel() {
           <div className="bg-[#071124] border border-slate-800 rounded-2xl p-6">
             <h1 className="text-3xl font-bold mb-6">Messages</h1>
 
-            <table className="w-full">
-              <thead>
-                <tr className="border-b border-slate-800 text-slate-400">
-                  <th className="text-left py-4">Title</th>
-                  <th className="text-left py-4">Text</th>
-                  <th className="text-left py-4">Author</th>
-                  <th className="text-left py-4">Date</th>
-                  <th className="text-left py-4">Action</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {allMessages.map((message) => (
-                  <tr key={message.id} className="border-b border-slate-800">
-                    <td className="py-4">{message.title}</td>
-
-                    <td className="py-4">{message.text}</td>
-
-                    <td>{message.author.fullName}</td>
-
-                    <td>
-                      {new Date(message.createdAt).toLocaleString("en-IN", {
-                        day: "numeric",
-                        month: "short",
-                        year: "numeric",
-                        hour: "numeric",
-                        minute: "2-digit",
-                        hour12: true,
-                      })}
-                    </td>
-
-                    <td>
-                      <button
-                        onClick={() => handleDelete(message._id)}
-                        className="px-3 py-1 bg-red-500 rounded-lg"
-                      >
-                        Delete
-                      </button>
-                    </td>
+            <div className="overflow-x-auto">
+              <table className="w-full min-w-225">
+                <thead>
+                  <tr className="border-b border-slate-800 text-slate-400">
+                    <th className="text-left py-4">Title</th>
+                    <th className="text-left py-4">Text</th>
+                    <th className="text-left py-4">Author</th>
+                    <th className="text-left py-4">Date</th>
+                    <th className="text-left py-4">Action</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+
+                <tbody>
+                  {allMessages.map((message) => (
+                    <tr key={message.id} className="border-b border-slate-800">
+                      <td className="py-4">{message.title}</td>
+
+                      <td className="py-4">{message.text}</td>
+
+                      <td>{message.author.fullName}</td>
+
+                      <td>
+                        {new Date(message.createdAt).toLocaleString("en-IN", {
+                          day: "numeric",
+                          month: "short",
+                          year: "numeric",
+                          hour: "numeric",
+                          minute: "2-digit",
+                          hour12: true,
+                        })}
+                      </td>
+
+                      <td>
+                        <button
+                          onClick={() => handleDelete(message._id)}
+                          className="px-3 py-1 bg-red-500 rounded-lg"
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
 
@@ -335,7 +343,7 @@ export default function AdminPanel() {
           <div className="bg-[#071124] border border-slate-800 rounded-2xl p-6">
             <h1 className="text-3xl font-bold mb-6">Club Members</h1>
 
-            <div className="grid md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
               {allClubMembers.map((member) => (
                 <div
                   key={member.id}
@@ -343,7 +351,7 @@ export default function AdminPanel() {
                 >
                   <h2 className="font-bold text-lg">{member.fullName}</h2>
 
-                  <p className="text-slate-400">{member.email}</p>
+                  <p className="text-slate-400 break-all">{member.email}</p>
 
                   <div className="mt-4">
                     <span className="px-3 py-1 rounded-full bg-violet-500/20 text-violet-400">
