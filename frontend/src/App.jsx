@@ -40,12 +40,19 @@ function App() {
       }
     } catch (error) {
       console.log(error.response.data);
+      setUser(null);
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    userAuthentication();
-  }, []);
+    if (token) {
+      userAuthentication();
+    } else {
+      setUser(null);
+      setIsLoading(false);
+    }
+  }, [token]);
   return (
     <AuthContext.Provider
       value={{ storeTokenInLS, LogoutUser, isLoggedIn, user, token, isLoading }}
